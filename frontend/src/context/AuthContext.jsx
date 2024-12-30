@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 
 export const AuthContext = createContext();
 
@@ -10,5 +10,7 @@ export const useAuthContext = () => {
 export const AuthContextProvider = ({ children }) => {
 	const [authUser, setAuthUser] = useState(JSON.parse(localStorage.getItem("chat-user")) || null);
 
-	return <AuthContext.Provider value={{ authUser, setAuthUser }}>{children}</AuthContext.Provider>;
+	const value = useMemo(() => ({ authUser, setAuthUser }), [authUser, setAuthUser]);
+
+	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
